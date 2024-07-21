@@ -37,7 +37,7 @@ export const TaskCard = ({ taskData, fetchTaskData }) => {
   const handleEditSubmit = (values) => {
     axios
       .patch(
-        `http://localhost:8080/task/edit/${selectedTask?._id}`,
+        `https://voosh-assignment-4zan.onrender.com/task/edit/${selectedTask?._id}`,
         values,
         {
           headers: {
@@ -59,7 +59,7 @@ export const TaskCard = ({ taskData, fetchTaskData }) => {
   const DeleteTask = (taskId) => {
     return () => {
       axios
-        .delete(`http://localhost:8080/task/delete/${taskId}`, {
+        .delete(`https://voosh-assignment-4zan.onrender.com/task/delete/${taskId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -192,7 +192,7 @@ export const TaskCard = ({ taskData, fetchTaskData }) => {
           </Draggable>
         ))
       ) : (
-        <p>No Data Found</p>
+        <p style={{textAlign:"center"}}>No Task Added</p>
       )}
     </div>
   );

@@ -16,7 +16,7 @@ const TaskModal = ({ visible, onClose, fetchTaskData }) => {
     setLoad(true);
     axios
       .post(
-        "http://localhost:8080/task/add",
+        "https://voosh-assignment-4zan.onrender.com/task/add",
         {
           ...values,
         },
@@ -35,7 +35,7 @@ const TaskModal = ({ visible, onClose, fetchTaskData }) => {
       })
       .catch((err) => {
         message.error("OOPS! Something Went Wrong!!");
-        setLoad(true);
+        setLoad(false);
       });
   };
 

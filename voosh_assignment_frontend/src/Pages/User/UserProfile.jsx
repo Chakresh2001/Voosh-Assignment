@@ -18,6 +18,7 @@ import { Navbar } from "../../Components/Navbar";
 import "./UserProfile.css";
 import { TiCancelOutline } from "react-icons/ti";
 import axios from "axios";
+import { Loader } from "../../Components/Loader/Loader";
 
 const UserProfile = () => {
   const [form] = Form.useForm();
@@ -27,18 +28,22 @@ const UserProfile = () => {
     JSON.parse(localStorage.getItem("userData"))
   );
   const token = localStorage.getItem("userToken");
+  const [load, setLoad] = useState(false)
 
   const fetchUserInfo = async () => {
     if (token) {
       try {
-        const response = await axios.get("http://localhost:8080/user/info", {
+        setLoad(true)
+        const response = await axios.get("https://voosh-assignment-4zan.onrender.com/user/info", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         localStorage.setItem("userData", JSON.stringify(response?.data?.user));
+        setLoad(false)
       } catch (error) {
         console.error("Failed to fetch user info", error);
+        setLoad(false)
       }
     }
   };
@@ -50,17 +55,20 @@ const UserProfile = () => {
     formData.append("image", info.file);
 
     try {
+      setLoad(true)
       const response = await axios.post(
-        "http://localhost:8080/upload/avatar",
+        "https://voosh-assignment-4zan.onrender.com/upload/avatar",
         formData
       );
       if (response) {
         fetchUserInfo();
         setImageUrl(response.data.user.avatar);
+        setLoad(false)
+        message.success("Avatar uploaded successfully");
       }
-      message.success("Avatar uploaded successfully");
     } catch (error) {
       message.error("OOPS! Something went wrong");
+      setLoad(false)
     }
   };
 
@@ -69,20 +77,38 @@ const UserProfile = () => {
     form.setFieldsValue(profile);
   };
 
-  const onFinish = (values) => {
+  const onFinish = async(values) => {
     setProfile({
       ...values,
       avatar: imageUrl || profile.avatar,
     });
+    try {
+      setLoad(true)
+      const response = await axios.patch(
+        "https://voosh-assignment-4zan.onrender.com/user/update",
+        {userId: profile?._id ,firstName : values?.firstName, lastName : values?.lastName, email : values?.email}
+      );
+      if (response) {
+        fetchUserInfo();
+        message.success("Profile updated successfully!");
+        setLoad(false)
+      }
+    } catch (error) {
+      message.error("OOPS! Something went wrong");
+      setLoad(false)
+    }
     setIsEditing(false);
-    message.success("Profile updated successfully!");
   };
 
   return (
     <>
       <Navbar />
       <div className="user-profile-container">
-        <div className="user-profile-content">
+        {
+          load ? (
+            <Loader/>
+          ) : (
+            <div className="user-profile-content">
           <h2>User Profile</h2>
           <div className="avatar-section">
             <Avatar
@@ -169,6 +195,8 @@ const UserProfile = () => {
             {isEditing ? "Cancel" : "Edit Profile"}
           </Button>
         </div>
+          )
+        }
       </div>
     </>
   );

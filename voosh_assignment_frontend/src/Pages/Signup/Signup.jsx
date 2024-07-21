@@ -11,7 +11,7 @@ export const Signup = () => {
   const navigate = useNavigate();
   const onFinish = (values) => {
 
-    axios.post("http://localhost:8080/user/register", values).then((res)=>{
+    axios.post("https://voosh-assignment-4zan.onrender.com/user/register", values).then((res)=>{
       message.success("User Registered Successfully")
       navigate("/")
     })
@@ -21,7 +21,7 @@ export const Signup = () => {
   };
 
   const handleGoogleSignup = () => {
-    window.location.href = "http://localhost:8080/user/auth/google";
+    window.location.href = "https://voosh-assignment-4zan.onrender.com/user/auth/google";
   };
 
   return (

@@ -8,13 +8,12 @@ require('dotenv').config();
 
 const userRoute = express.Router();
 
-// Google Strategy
 passport.use(
     new GoogleStrategy(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: "http://localhost:8080/user/auth/google/callback",
+            callbackURL: "https://voosh-assignment-4zan.onrender.com/user/auth/google/callback",
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
@@ -27,7 +26,6 @@ passport.use(
                         firstName: profile.name.givenName,
                         lastName: profile.name.familyName,
                         email: profile.emails[0].value,
-                        // Do not set password for Google OAuth users
                     });
                     user = await newUser.save();
                     return done(null, user);
@@ -52,7 +50,6 @@ passport.deserializeUser(async (id, done) => {
     }
 });
 
-// Register Route
 userRoute.post("/register", async (req, res) => {
     try {
         const { email, password, firstName, lastName } = req.body;
@@ -100,7 +97,6 @@ userRoute.post("/register", async (req, res) => {
 });
 
 
-// Login Route
 userRoute.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -123,7 +119,6 @@ userRoute.post("/login", async (req, res) => {
             const token = jwt.sign(
                 { userID: user._id, userName: user.name, userEmail: user.email },
                 "1234",
-                { expiresIn: '1h' }
             );
 
             res.json({
@@ -143,7 +138,6 @@ userRoute.patch("/update", async (req, res) => {
     try {
         const { userId, firstName, lastName, email } = req.body;
 
-        // Find the user by ID and update the details
         const user = await UserModel.findByIdAndUpdate(
             userId,
             { firstName, lastName, email },
@@ -162,7 +156,6 @@ userRoute.patch("/update", async (req, res) => {
 });
 
 
-// Google Auth Routes
 userRoute.get(
     "/auth/google",
     passport.authenticate("google", { scope: ["profile", "email"] })
@@ -176,7 +169,6 @@ userRoute.get(
             { userID: req.user._id, userName: req.user.firstName, userEmail: req.user.email },
             process.env.JWT_SECRET || "1234"
         );
-        // Redirect to frontend application with the token
         res.redirect(`http://localhost:5173/auth/success?token=${token}`);
     }
 );

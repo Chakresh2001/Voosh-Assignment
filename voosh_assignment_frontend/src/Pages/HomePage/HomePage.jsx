@@ -25,7 +25,7 @@ const HomePage = () => {
     if (token) {
       try {
         setLoad(true);
-        const response = await axios.get("http://localhost:8080/user/info", {
+        const response = await axios.get("https://voosh-assignment-4zan.onrender.com/user/info", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -34,7 +34,7 @@ const HomePage = () => {
         setLoad(false);
       } catch (error) {
         console.error("Failed to fetch user info", error);
-        setLoad(true);
+        setLoad(false);
       }
     }
   };
@@ -48,7 +48,7 @@ const HomePage = () => {
     if (isCompleted !== undefined) params.is_completed = isCompleted;
     setLoad(true);
     axios
-      .get("http://localhost:8080/task/all", {
+      .get("https://voosh-assignment-4zan.onrender.com/task/all", {
         params,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -60,7 +60,7 @@ const HomePage = () => {
       })
       .catch((err) => {
         message.error("OOPS! Something Went Wrong");
-        setLoad(true);
+        setLoad(false);
       });
   };
 

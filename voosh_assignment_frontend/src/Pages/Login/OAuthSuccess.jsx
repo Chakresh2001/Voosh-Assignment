@@ -8,8 +8,8 @@ export const OAuthSuccess = () => {
   useEffect(() => {
     const token = searchParams.get('token');
     if (token) {
-      localStorage.setItem('userToken', token); // Store the token
-      navigate('/home'); // Redirect to the home page
+      localStorage.setItem('userToken', token); 
+      navigate('/home'); 
     }
   }, [searchParams, navigate]);
 

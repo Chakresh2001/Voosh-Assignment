@@ -29,7 +29,7 @@ export const TaskPage = ({ taskData, fetchTaskData }) => {
     const token = localStorage.getItem("userToken");
     setLoad(true);
     axios
-      .patch(`http://localhost:8080/task/edit/${draggableId}`, payload, {
+      .patch(`https://voosh-assignment-4zan.onrender.com/task/edit/${draggableId}`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -41,7 +41,7 @@ export const TaskPage = ({ taskData, fetchTaskData }) => {
       })
       .catch((err) => {
         console.error("Error moving task", err);
-        setLoad(true);
+        setLoad(false);
       });
   };
 
