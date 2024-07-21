@@ -169,7 +169,7 @@ userRoute.get(
             { userID: req.user._id, userName: req.user.firstName, userEmail: req.user.email },
             process.env.JWT_SECRET || "1234"
         );
-        res.redirect(`http://localhost:5173/auth/success?token=${token}`);
+        res.redirect(`https://voosh-assignment-dusky.vercel.app/auth/success?token=${token}`);
     }
 );
 
