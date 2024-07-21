@@ -46,16 +46,16 @@ export const Navbar = () => {
         ) : (
           <div className="navbar-btn">
             <Button
-              className={location.pathname === "/" ? "active" : ""}
-              onClick={() => navigate("/")}
-            >
-              Login
-            </Button>
-            <Button
               className={location.pathname === "/signup" ? "active" : ""}
               onClick={() => navigate("/signup")}
             >
               Signup
+            </Button>
+            <Button
+              className={location.pathname === "/" ? "active" : ""}
+              onClick={() => navigate("/")}
+            >
+              Login
             </Button>
           </div>
         )}
