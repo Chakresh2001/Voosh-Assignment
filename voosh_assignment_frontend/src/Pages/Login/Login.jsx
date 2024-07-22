@@ -36,7 +36,7 @@ export const Login = () => {
   };
   const handleGoogleLogin = () => {
     window.location.href =
-      "https://voosh-assignment-4zan.onrender.com/auth/google";
+      "https://voosh-assignment-4zan.onrender.com/user/auth/google";
   };
 
   return (
