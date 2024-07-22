@@ -8,47 +8,6 @@ require('dotenv').config();
 
 const userRoute = express.Router();
 
-passport.use(
-    new GoogleStrategy(
-        {
-            clientID: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: "https://voosh-assignment-4zan.onrender.com/user/auth/google/callback",
-        },
-        async (accessToken, refreshToken, profile, done) => {
-            try {
-                let user = await UserModel.findOne({ googleId: profile.id });
-                if (user) {
-                    return done(null, user);
-                } else {
-                    const newUser = new UserModel({
-                        googleId: profile.id,
-                        firstName: profile.name.givenName,
-                        lastName: profile.name.familyName,
-                        email: profile.emails[0].value,
-                    });
-                    user = await newUser.save();
-                    return done(null, user);
-                }
-            } catch (error) {
-                return done(error, null);
-            }
-        }
-    )
-);
-
-passport.serializeUser((user, done) => {
-    done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
-    try {
-        const user = await UserModel.findById(id);
-        done(null, user);
-    } catch (error) {
-        done(error, null);
-    }
-});
 
 userRoute.post("/register", async (req, res) => {
     try {
@@ -156,23 +115,6 @@ userRoute.patch("/update", async (req, res) => {
 });
 
 
-userRoute.get(
-    "/auth/google",
-    passport.authenticate("google", { scope: ["email"] })
-);
-
-userRoute.get(
-    "/auth/google/callback",
-    passport.authenticate("google", { failureRedirect: "/" }),
-    (req, res) => {
-        const token = jwt.sign(
-            { userID: req.user._id, userName: req.user.firstName, userEmail: req.user.email },
-            process.env.JWT_SECRET || "1234"
-        );
-        res.redirect(`https://voosh-assignment-dusky.vercel.app/auth/success?token=${token}`);
-    }
-);
-
 userRoute.get("/info", async (req, res) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
@@ -192,14 +134,29 @@ userRoute.get("/info", async (req, res) => {
 });
 
 
-userRoute.get("/auth/success", (req, res) => {
-    res.json({
-        message: "User Successfully Logged In with Google",
-        token: req.query.token,
-        firstName: req.user.firstName,
-        lastName: req.user.lastName,
-        userEmail: req.user.email,
-    });
+router.post('/auth-google', async (req, res) => {
+    const { googleId, firstName, lastName, email, avatar } = req.body;
+
+    try {
+        let user = await UserModel.findOne({ email });
+
+        if (!user) {
+            user = new UserModel({
+                googleId,
+                firstName,
+                lastName,
+                email,
+                avatar,
+            });
+            await user.save();
+        }
+
+        const token = jwt.sign({ id: user._id }, "1234");
+
+        res.status(201).json({ token, user });
+    } catch (error) {
+        res.status(400).json({ message: 'Google authentication failed', error });
+    }
 });
 
 module.exports = userRoute;

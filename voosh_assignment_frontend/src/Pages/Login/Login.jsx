@@ -5,7 +5,8 @@ import { GoogleOutlined, TruckOutlined } from "@ant-design/icons";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {Loader} from "../../Components/Loader/Loader";
+import { Loader } from "../../Components/Loader/Loader";
+import { signInWithGooglePopup } from "./gooleAuth";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -34,9 +35,33 @@ export const Login = () => {
         navigate("/home");
       });
   };
-  const handleGoogleLogin = () => {
-    window.location.href =
-      "https://voosh-assignment-4zan.onrender.com/user/auth/google/callback";
+
+  const handleGoogleLogin = async () => {
+    try {
+      const response = await signInWithGooglePopup();
+      const { email, displayName, photoUrl } = response._tokenResponse;
+      const uid = response?.user.uid
+      const [firstName, lastName] = displayName.split(" ");
+
+      console.log(email, displayName, photoUrl, uid)
+
+      const res = await axios.post(
+        "https://voosh-assignment-4zan.onrender.com/user/auth-google",
+        {
+          googleId: uid,
+          firstName,
+          lastName,
+          email,
+          avatar: photoUrl,
+        }
+      );
+
+      localStorage.setItem("userToken", res.data.token);
+      message.success("Successfully Logged In");
+      navigate("/home");
+    } catch (error) {
+      message.error("Google Login Failed");
+    }
   };
 
   return (
