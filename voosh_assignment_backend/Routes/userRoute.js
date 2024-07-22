@@ -134,7 +134,7 @@ userRoute.get("/info", async (req, res) => {
 });
 
 
-router.post('/auth-google', async (req, res) => {
+userRoute.post('/auth-google', async (req, res) => {
     const { googleId, firstName, lastName, email, avatar } = req.body;
 
     try {
