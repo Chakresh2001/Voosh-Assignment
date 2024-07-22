@@ -14,6 +14,14 @@ export const TaskCard = ({ taskData, fetchTaskData }) => {
   const [selectedTask, setSelectedTask] = useState(null);
   const token = localStorage.getItem("userToken");
 
+  const validateNotEmpty = (rule, value) => {
+    if (!value || value.trim() === "") {
+      return Promise.reject("This field cannot be empty or whitespace only!");
+    }
+    return Promise.resolve();
+  };
+
+
   const showViewModal = (task) => {
     setSelectedTask(task);
     setViewModalVisible(true);
@@ -164,6 +172,7 @@ export const TaskCard = ({ taskData, fetchTaskData }) => {
                       label="Title"
                       rules={[
                         { required: true, message: "Please enter the task title!" },
+                        { validator: validateNotEmpty },
                       ]}
                     >
                       <Input />
@@ -176,6 +185,7 @@ export const TaskCard = ({ taskData, fetchTaskData }) => {
                           required: true,
                           message: "Please enter the task description!",
                         },
+                        { validator: validateNotEmpty },
                       ]}
                     >
                       <Input.TextArea rows={4} />

@@ -41,7 +41,7 @@ export const Login = () => {
         localStorage.setItem("userToken", res?.data?.token);
         message.success("Successfully Logged In");
         navigate("/home");
-      });
+      }).catch((err)=>message.error(err?.response?.data?.error))
   };
 
   const handleGoogleLogin = async () => {
@@ -50,9 +50,6 @@ export const Login = () => {
       const { email, displayName, photoUrl } = response._tokenResponse;
       const uid = response?.user.uid
       const [firstName, lastName] = displayName.split(" ");
-
-      console.log(email, displayName, photoUrl, uid)
-
       const res = await axios.post(
         "https://voosh-assignment-4zan.onrender.com/user/auth-google",
         {

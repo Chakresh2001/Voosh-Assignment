@@ -121,7 +121,6 @@ userRoute.get("/info", async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, "1234");
-    console.log(decoded);
 
     let user;
     if (decoded.googleId) {
@@ -157,8 +156,6 @@ userRoute.post("/auth-google", async (req, res) => {
       });
       await user.save();
     }
-
-    console.log(user?._id);
 
     const token = jwt.sign(
       {

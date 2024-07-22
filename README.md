@@ -2,6 +2,9 @@
 
 Welcome to the Task Management Application! This application allows users to create, update, and manage tasks within different columns, similar to Trello. Users can move tasks between columns using drag-and-drop functionality and log in via Google for a seamless experience.
 
+## FrontEnd Deployed Link :- https://voosh-assignment-dusky.vercel.app/
+## BackEnd Deployed Link :- https://voosh-assignment-4zan.onrender.com
+
 ## Table of Contents
 
 1. [Features](#features)
@@ -127,6 +130,7 @@ Server-side validation is implemented to ensure that:
 
 ![Signup Page](https://github.com/user-attachments/assets/f7b434c0-f941-4305-8083-2bb68f9c7713)
 
+
 # Application Home Page
 
 ![Home page](https://github.com/user-attachments/assets/700c18ef-d652-4d5b-b7d2-92df66b3667f)
@@ -149,5 +153,6 @@ Server-side validation is implemented to ensure that:
 
 
 ## Thank you for using the Task Management Application! If you have any questions or feedback, please feel free to open an issue on GitHub Or Mail Me At :- jha.chakresh2001@gmail.com
+
 
 
