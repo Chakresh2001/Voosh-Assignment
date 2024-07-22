@@ -11,8 +11,8 @@ export const Signup = () => {
   const navigate = useNavigate();
   const onFinish = (values) => {
     if (
-      !/[A-Z]/.test(password) ||
-      !/[1-9]/.test(password) ||
+      !/[A-Z]/.test(values?.password) ||
+      !/[1-9]/.test(values?.password) ||
       !/[!@#$%^&*_?":]/.test(values.password) ||
       values.password.length < 8
     ) {
