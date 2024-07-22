@@ -37,4 +37,6 @@ First, clone the repository to your local machine:
 
 ```bash
 git clone (https://github.com/Chakresh2001/Voosh-Assignment.git)
-cd <your-repo-name>
+cd Voosh-Assignment
+
+
