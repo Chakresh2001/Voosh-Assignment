@@ -35,8 +35,96 @@ Make sure you have the following installed on your local development environment
 
 First, clone the repository to your local machine:
 
-```bash
+```
 git clone (https://github.com/Chakresh2001/Voosh-Assignment.git)
 cd Voosh-Assignment
+```
+
+# Install Dependencies
+Navigate to the frontend and backend folders separately and run the following command to install the necessary dependencies:
+
+```
+npm install
+```
+
+# Configure Environment Variables
+Create a .env file in the backend folder and add the following environment variables:
+
+```
+MONGO_URI=<your-mongodb-connection-string>
+GOOGLE_CLIENT_ID=<your-google-client-id>
+GOOGLE_CLIENT_SECRET=<your-google-client-secret>
+```
+
+# Run the Application
+
+## FrontEnd Server
+To start the frontend server, navigate to the frontend folder and run:
+
+```
+npm run dev
+```
+The frontend server will run on http://localhost:5173/.
+
+ ## Backend Server
+ To start the backend server, navigate to the backend folder and run:
+
+ ```
+npm run start
+```
+The backend server will run on http://localhost:8080/.
+
+## Usage
+
+### User Authentication
+
+- **Sign Up**: Users can create a new account using their email and password.
+- **Log In**: Users can log in using their email and password or via Google.
+- **Profile Management**: After logging in, users can update their profile information, including email, name, and profile picture.
+
+### Task Management
+
+- **Create Tasks**: Users can add new tasks with a title and description.
+- **Drag-and-Drop**: Users can drag and drop tasks between columns such as "To Do," "In Progress," and "Completed."
+- **Edit Tasks**: Users can edit the details of existing tasks.
+- **Delete Tasks**: Users can delete tasks they no longer need.
+- **Search and Sort**: Users can search for tasks by title and sort tasks based on different criteria.
+
+## API Endpoints
+
+### User Authentication
+
+- **POST** `user/register` - Register a new user
+- **POST** `user/login` - Log in an existing user
+- **GET** `user/auth-google` - Log in using Google
+
+### Task Management
+
+- **POST** `/task/add` - Create a new task
+- **GET** `/task/all` - Retrieve all tasks
+- **GET** `/task/all/:id` - Retrieve a specific task
+- **PATCH** `/task/edit/:taskId` - Update a task
+- **DELETE** `/task/delete/:taskId` - Delete a task
+
+## Error Handling
+
+The application includes comprehensive error handling to ensure that users receive appropriate error messages and status codes. Common errors such as invalid input data, authentication failures, and server errors are handled gracefully.
+
+## Validation
+
+Server-side validation is implemented to ensure that:
+
+- **Tasks**: Tasks must have a valid title and belong to a valid column.
+- **User Registration and Login**: Ensure user data is valid and secure.
+
+## SCREENSHOTS 
+
+# Application Login Page
+
+![Login Page](https://github.com/user-attachments/assets/8e11367f-9419-4d32-88fc-661124322184)
+
+# Application Signup Page
+
+![Signup Page](https://github.com/user-attachments/assets/f7b434c0-f941-4305-8083-2bb68f9c7713)
 
 
