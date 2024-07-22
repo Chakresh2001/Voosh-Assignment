@@ -13,7 +13,7 @@ passport.use(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: "https://voosh-assignment-4zan.onrender.com/user/auth/google/callback",
+            callbackURL: "https://voosh-assignment-4zan.onrender.com/auth/google/callback",
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
