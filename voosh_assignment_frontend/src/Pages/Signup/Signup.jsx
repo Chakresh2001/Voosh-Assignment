@@ -30,7 +30,7 @@ export const Signup = () => {
       navigate("/")
     })
     .catch((err)=>{
-      message.error("OOPS! Something Went Wrong!!")
+      message.error(err?.response?.data?.error)
     })
   };
 
