@@ -10,78 +10,45 @@ const userRoute = express.Router();
 
 passport.use(
     new GoogleStrategy(
-      {
-        clientID: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "https://voosh-assignment-4zan.onrender.com/auth/google/callback",
-      },
-      async (accessToken, refreshToken, profile, done) => {
-        console.log("Google Auth is working");
-        try {
-          let user = await UserModel.findOne({ googleId: profile.id });
-          if (user) {
-            return done(null, user);
-          } else {
-            const newUser = new UserModel({
-              googleId: profile.id,
-              firstName: profile.name.givenName,
-              lastName: profile.name.familyName,
-              email: profile.emails[0].value,
-            });
-            user = await newUser.save();
-            return done(null, user);
-          }
-        } catch (error) {
-          return done(error, null);
+        {
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            callbackURL: "https://voosh-assignment-4zan.onrender.com/user/auth/google/callback",
+        },
+        async (accessToken, refreshToken, profile, done) => {
+            try {
+                let user = await UserModel.findOne({ googleId: profile.id });
+                if (user) {
+                    return done(null, user);
+                } else {
+                    const newUser = new UserModel({
+                        googleId: profile.id,
+                        firstName: profile.name.givenName,
+                        lastName: profile.name.familyName,
+                        email: profile.emails[0].value,
+                    });
+                    user = await newUser.save();
+                    return done(null, user);
+                }
+            } catch (error) {
+                return done(error, null);
+            }
         }
-      }
     )
-  );
-  
-  passport.serializeUser((user, done) => {
+);
+
+passport.serializeUser((user, done) => {
     done(null, user.id);
-  });
-  
-  passport.deserializeUser(async (id, done) => {
+});
+
+passport.deserializeUser(async (id, done) => {
     try {
-      const user = await UserModel.findById(id);
-      done(null, user);
+        const user = await UserModel.findById(id);
+        done(null, user);
     } catch (error) {
-      done(error, null);
+        done(error, null);
     }
-  });
-  
-  userRoute.get(
-    "/auth/google",
-    passport.authenticate("google", { scope: ["profile", "email"] })
-  );
-  
-  userRoute.get(
-    "/auth/google/callback",
-    passport.authenticate("google", { failureRedirect: "/" }),
-    (req, res) => {
-      console.log("Google Auth is working");
-      const token = jwt.sign(
-        { userID: req.user._id, userName: req.user.firstName, userEmail: req.user.email },
-        process.env.JWT_SECRET || "1234"
-      );
-      res.redirect(`https://voosh-assignment-dusky.vercel.app/auth/success?token=${token}`);
-    }
-  );
-  userRoute.get('/auth/google/callback', (req, res, next) => {
-    console.log("Callback route hit");
-    next();
-  },
-  passport.authenticate('google', { failureRedirect: '/' }),
-  (req, res) => {
-    console.log("Google Auth is working");
-    const token = jwt.sign(
-      { userID: req.user._id, userName: req.user.firstName, userEmail: req.user.email },
-      process.env.JWT_SECRET || "1234"
-    );
-    res.redirect(`https://voosh-assignment-dusky.vercel.app/auth/success?token=${token}`);
-  });
-    
+});
 
 userRoute.post("/register", async (req, res) => {
     try {
@@ -187,6 +154,24 @@ userRoute.patch("/update", async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+
+
+userRoute.get(
+    "/auth/google",
+    passport.authenticate("google", { scope: ["email"] })
+);
+
+userRoute.get(
+    "/auth/google/callback",
+    passport.authenticate("google", { failureRedirect: "/" }),
+    (req, res) => {
+        const token = jwt.sign(
+            { userID: req.user._id, userName: req.user.firstName, userEmail: req.user.email },
+            process.env.JWT_SECRET || "1234"
+        );
+        res.redirect(`https://voosh-assignment-dusky.vercel.app/auth/success?token=${token}`);
+    }
+);
 
 userRoute.get("/info", async (req, res) => {
     const token = req.headers.authorization?.split(' ')[1];
