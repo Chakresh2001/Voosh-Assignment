@@ -16,7 +16,7 @@ passport.use(
         callbackURL: "https://voosh-assignment-4zan.onrender.com/auth/google/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
-        console.log("GooGle Auth is working")
+        console.log("Google Auth is working");
         try {
           let user = await UserModel.findOne({ googleId: profile.id });
           if (user) {
@@ -60,7 +60,7 @@ passport.use(
     "/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
     (req, res) => {
-        console.log("GooGle Auth is working")
+      console.log("Google Auth is working");
       const token = jwt.sign(
         { userID: req.user._id, userName: req.user.firstName, userEmail: req.user.email },
         process.env.JWT_SECRET || "1234"
@@ -68,6 +68,20 @@ passport.use(
       res.redirect(`https://voosh-assignment-dusky.vercel.app/auth/success?token=${token}`);
     }
   );
+  userRoute.get('/auth/google/callback', (req, res, next) => {
+    console.log("Callback route hit");
+    next();
+  },
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => {
+    console.log("Google Auth is working");
+    const token = jwt.sign(
+      { userID: req.user._id, userName: req.user.firstName, userEmail: req.user.email },
+      process.env.JWT_SECRET || "1234"
+    );
+    res.redirect(`https://voosh-assignment-dusky.vercel.app/auth/success?token=${token}`);
+  });
+    
 
 userRoute.post("/register", async (req, res) => {
     try {
