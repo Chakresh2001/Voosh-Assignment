@@ -15,7 +15,6 @@ export const Router = () => {
             <Route path='/signup' element={<Signup/>}/>
             <Route path='/home' element={<PrivateRoute><HomePage/></PrivateRoute>}/>
             <Route path='/profile' element={<PrivateRoute><UserProfile/></PrivateRoute>}/>
-            <Route path='/auth/success' element={<OAuthSuccess />} />
         </Routes>
     </div>
   )
