@@ -16,6 +16,7 @@ passport.use(
         callbackURL: "https://voosh-assignment-4zan.onrender.com/auth/google/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
+        console.log("GooGle Auth is working")
         try {
           let user = await UserModel.findOne({ googleId: profile.id });
           if (user) {
@@ -59,6 +60,7 @@ passport.use(
     "/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
     (req, res) => {
+        console.log("GooGle Auth is working")
       const token = jwt.sign(
         { userID: req.user._id, userName: req.user.firstName, userEmail: req.user.email },
         process.env.JWT_SECRET || "1234"
