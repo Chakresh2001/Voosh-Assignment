@@ -125,7 +125,7 @@ userRoute.get("/info", async (req, res) => {
 
     let user;
     if (decoded.googleId) {
-      user = await UserModel.findOne({ googleId: decoded.userEmail });
+      user = await UserModel.findOne({ googleId: decoded.googleId });
     } else {
       user = await UserModel.findById(decoded.userID);
     }
