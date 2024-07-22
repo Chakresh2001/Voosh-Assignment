@@ -25,7 +25,7 @@ const HomePage = () => {
     if (token) {
       try {
         setLoad(true);
-        const response = await axios.get("http://localhost:8080/user/info", {
+        const response = await axios.get("https://voosh-assignment-4zan.onrender.com/user/info", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
