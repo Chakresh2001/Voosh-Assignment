@@ -131,3 +131,28 @@ Server-side validation is implemented to ensure that:
 ![Signup Page](https://github.com/user-attachments/assets/f7b434c0-f941-4305-8083-2bb68f9c7713)
 
 
+# Application Home Page
+
+![Home page](https://github.com/user-attachments/assets/700c18ef-d652-4d5b-b7d2-92df66b3667f)
+
+# Application Profile Page
+
+![Profile page](https://github.com/user-attachments/assets/fa0afcdd-c25a-4875-89a7-e36899d994bc)
+
+# Application Profile Eidt
+
+![Profile edit page](https://github.com/user-attachments/assets/0cae1256-b144-4b3a-8ff3-fc7a52c473c2)
+
+# Application Signup Validation FrontEnd
+
+![signup validation](https://github.com/user-attachments/assets/d6aae50b-a2b0-45e0-ad3e-0ebdd4c1170c)
+
+# Application Add Task Validation
+
+![Add Task Validation](https://github.com/user-attachments/assets/00ff877e-437a-404d-944b-a3f89e1e70a9)
+
+
+## Thank you for using the Task Management Application! If you have any questions or feedback, please feel free to open an issue on GitHub Or Mail Me At :- jha.chakresh2001@gmail.com
+
+
+
