@@ -10,7 +10,14 @@ import { message } from "antd";
 export const Signup = () => {
   const navigate = useNavigate();
   const onFinish = (values) => {
-
+    if (
+      !/[A-Z]/.test(password) ||
+      !/[1-9]/.test(password) ||
+      !/[!@#$%^&*_?":]/.test(values.password) ||
+      values.password.length < 8
+    ) {
+      return message.error("Password must have One uppercase, One number, and One Special Character")
+    }
     axios.post("https://voosh-assignment-4zan.onrender.com/user/register", values).then((res)=>{
       message.success("User Registered Successfully")
       navigate("/")
