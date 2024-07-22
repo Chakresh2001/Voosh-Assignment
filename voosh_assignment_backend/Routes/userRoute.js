@@ -143,6 +143,9 @@ userRoute.get("/info", async (req, res) => {
 
 userRoute.post("/auth-google", async (req, res) => {
   const { googleId, firstName, lastName, email, avatar } = req.body;
+  if(!lastName){
+    lastName = ""
+  }
 
   try {
     let user = await UserModel.findOne({ email });
