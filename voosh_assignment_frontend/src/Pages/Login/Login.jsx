@@ -46,7 +46,7 @@ export const Login = () => {
       console.log(email, displayName, photoUrl, uid)
 
       const res = await axios.post(
-        "https://voosh-assignment-4zan.onrender.com/user/auth-google",
+        "http://localhost:8080/user/auth-google",
         {
           googleId: uid,
           firstName,

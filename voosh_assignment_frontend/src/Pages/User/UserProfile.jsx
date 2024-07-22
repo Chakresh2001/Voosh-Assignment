@@ -62,7 +62,7 @@ const UserProfile = () => {
       );
       if (response) {
         fetchUserInfo();
-        setImageUrl(response.data.user.avatar);
+        setImageUrl(response?.data?.user?.avatar);
         setLoad(false)
         message.success("Avatar uploaded successfully");
       }
@@ -114,7 +114,7 @@ const UserProfile = () => {
             <Avatar
               size={100}
               icon={<UserOutlined />}
-              src={imageUrl || profile.avatar}
+              src={imageUrl || profile?.avatar}
             />
             {isEditing && (
               <Upload
