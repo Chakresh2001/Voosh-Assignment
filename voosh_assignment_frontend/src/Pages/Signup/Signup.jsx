@@ -6,9 +6,16 @@ import { Navbar } from "../../Components/Navbar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
 import { message } from "antd";
+import { signInWithGooglePopup } from "../Login/gooleAuth";
 
 export const Signup = () => {
   const navigate = useNavigate();
+  const validateNotEmpty = (rule, value) => {
+    if (!value || value.trim() === "") {
+      return Promise.reject("This field cannot be empty or whitespace only!");
+    }
+    return Promise.resolve();
+  };
   const onFinish = (values) => {
     if (
       !/[A-Z]/.test(values?.password) ||
@@ -27,8 +34,32 @@ export const Signup = () => {
     })
   };
 
-  const handleGoogleSignup = () => {
-    window.location.href = "https://voosh-assignment-4zan.onrender.com/user/auth/google";
+  const handleGoogleLogin = async () => {
+    try {
+      const response = await signInWithGooglePopup();
+      const { email, displayName, photoUrl } = response._tokenResponse;
+      const uid = response?.user.uid
+      const [firstName, lastName] = displayName.split(" ");
+
+      console.log(email, displayName, photoUrl, uid)
+
+      const res = await axios.post(
+        "https://voosh-assignment-4zan.onrender.com/user/auth-google",
+        {
+          googleId: uid,
+          firstName,
+          lastName,
+          email,
+          avatar: photoUrl,
+        }
+      );
+
+      localStorage.setItem("userToken", res.data.token);
+      message.success("Successfully Logged In");
+      navigate("/home");
+    } catch (error) {
+      message.error("Google Login Failed");
+    }
   };
 
   return (
@@ -43,28 +74,28 @@ export const Signup = () => {
         >
           <Form.Item
             name="firstName"
-            rules={[{ required: true, message: "Please input your First Name!" }]}
+            rules={[{ required: true, message: "Please input your First Name!" },  { validator: validateNotEmpty },]}
           >
             <Input placeholder="First Name" />
           </Form.Item>
 
           <Form.Item
             name="lastName"
-            rules={[{ required: true, message: "Please input your Last Name!" }]}
+            rules={[{ required: true, message: "Please input your Last Name!" },  { validator: validateNotEmpty },]}
           >
             <Input placeholder="Last Name" />
           </Form.Item>
 
           <Form.Item
             name="email"
-            rules={[{ required: true, message: "Please input your Email!" }]}
+            rules={[{ required: true, message: "Please input your Email!" },  { validator: validateNotEmpty },]}
           >
             <Input placeholder="Email" />
           </Form.Item>
 
           <Form.Item
             name="password"
-            rules={[{ required: true, message: "Please input your Password!" }]}
+            rules={[{ required: true, message: "Please input your Password!" },  { validator: validateNotEmpty },]}
           >
             <Input.Password placeholder="Password" />
           </Form.Item>
@@ -97,7 +128,7 @@ export const Signup = () => {
         <div className="alternate-option">
           Already have an account? <a style={{ cursor: "pointer" }} onClick={() => navigate("/")}>Login</a>
         </div>
-        <Button type="default" icon={<GoogleOutlined />} block onClick={handleGoogleSignup}>
+        <Button type="default" icon={<GoogleOutlined />} block onClick={handleGoogleLogin}>
           Signup with Google
         </Button>
       </div>
